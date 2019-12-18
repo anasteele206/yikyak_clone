@@ -1,0 +1,45 @@
+<script>
+$("textarea#comment_text").maxlength({
+showOnReady: false,
+alwaysShow: true,
+threshold: 0,
+warningClass: "small form-text text-muted",
+limitReachedClass: "small form-text text-danger",
+separator: " / ",
+preText: "",
+postText: "",
+showMaxLength: true,
+placement: "bottom-right-inside",
+message: null,
+showCharsTyped: true,
+validate: false,
+utf8: false,
+appendToParent: false,
+twoCharLinebreak: true,
+customMaxAttribute: null,
+allowOverMax: false
+});
+
+</script>
+<div class="container">
+      <h1><%= @post.text %></h1>
+      <% if @post.show_username? %>
+        <%= @post.user.email %>
+      <% end %>
+      <hr>
+  <div id="comment_pane">
+      <% @comments.each do |comment| %>
+        <%= render 'comments/comment', comment: comment %>
+      <% end %>
+  </div>
+    <div class="row fixed-bottom pb-5">
+      <%= form_with(model: [@post, @comment], class: "container") do |form| %>
+        <div class="input-group mb-3">
+          <%= form.text_area :text, class: "form-control", maxlength: 200 %>
+          <div class="input-group-append">
+            <%= form.submit "test", class:"btn btn-primary" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+</div>

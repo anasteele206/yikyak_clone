@@ -1,0 +1,91 @@
+<script>
+    $( document ).on('turbolinks:load', function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, errorOut);
+        } else {
+            showError("Geolocation is not supported by this browser.");
+        }
+
+        function success(position) {
+            //position.coords.latitude
+            //position.coords.longitude
+            $("#post_lat").val("123.456");
+            $("#post_long").val("123.456");
+        }
+
+        function errorOut(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    showError("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    showError("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    showError("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    showError("An unknown error occurred.");
+                    break;
+            }
+        }
+
+        function showError(error) {
+            $("body").prepend("<div class=\"alert alert-danger alert-dismissible fade show mb-0\" role=\"alert\">\n" +
+                "    <div class=\"container\">\n" +
+                "      <span class=\"alert-inner--icon\"><i class=\"fas fa-times\"></i></span>\n" +
+                "      <span class=\"alert-inner--text\">" + error + "</span>\n" +
+                "      <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                "        <span aria-hidden=\"true\">&times;</span>\n" +
+                "      </button>\n" +
+                "    </div>\n" +
+                "  </div>");
+            $("[name='commit']").prop('disabled', true);
+        }
+
+    });
+
+    $("textarea#post_text").maxlength({
+        showOnReady: false,
+        alwaysShow: true,
+        threshold: 0,
+        warningClass: "small form-text text-muted",
+        limitReachedClass: "small form-text text-danger",
+        separator: " / ",
+        preText: "",
+        postText: "",
+        showMaxLength: true,
+        placement: "bottom-right-inside",
+        message: null,
+        showCharsTyped: true,
+        validate: false,
+        utf8: false,
+        appendToParent: false,
+        twoCharLinebreak: true,
+        customMaxAttribute: null,
+        allowOverMax: false
+    });
+
+</script>
+  <%= form_with(model: @post, local: true, class: "container") do |form| %>
+    <% if @post.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+        <ul>
+          <% @post.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <%= form.text_area :text, class: "form-control", maxlength: 200 %>
+    </div>
+    <%= form.hidden_field :lat %>
+    <%= form.hidden_field :long %>
+    <div class="form-check">
+      <%= form.check_box :show_username, class: "form-check-input" %>
+      <%= form.label :show_username %>
+    </div>
+    <%= form.submit class:"btn btn-primary" %>
+  <% end %>

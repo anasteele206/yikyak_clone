@@ -1,0 +1,9 @@
+<div id="comment-<%= comment.id %>">
+  [<%= comment.created_at.strftime("%I:%M %p") %>]
+  <%= comment.user.email %>
+  <% if comment.user == current_user %>
+    <%= link_to "Delete", post_comment_path(@post, comment), method: :delete, remote: true, style: 'float: right' %>
+  <% end %>
+  <%= comment.text %>
+  <hr />
+</div>

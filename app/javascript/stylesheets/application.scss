@@ -1,0 +1,13 @@
+@import './bootstrap_custom.scss';
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+
+body {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+textarea {
+  resize: none;
+}
